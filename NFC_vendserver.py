@@ -14,7 +14,8 @@ import MySQLdb
 import io
 import time
 
-EM4='/dev/ttyUSB1' # Usually this, pl2303 device
+#NFC='/dev/ttyUSB4' # Usually this, pl2303 device
+NFC='/dev/ttyUSB2' # Usually this, pl2303 device
 KEYPAD='/dev/ttyUSB3' # changes
 # TODO, Incluse Asking code for Arduinos so we dont need to specify the ports, Discover automagically
 
@@ -23,7 +24,7 @@ mainmessage = "Welcome to The Artifactory, Please scan NFC or Tag to begin ...."
 irker_server = ('core', 6659)
 target = 'ircs://chat.freenode.net/artifactorys'
 subsystem = 'Vendo: '
-EM4reader = serial.Serial(EM4, 9600)
+NFCreader = serial.Serial(NFC, 9600)
 
 def takemoney():
 	print "Reading How much the slot was: "
@@ -71,7 +72,7 @@ def beginvend():
 	row = cur.fetchone()
 	if row :
 		print row
-		irk('EM4 Card Presented: ' +row[0])
+		irk('NFC Card Presented: ' +row[0])
 		balance = "%s" % row
 
 	# here is the big issue, The way the screen works is its expecting to see 64 Characters sent to it (Its also the way i programmed it)
@@ -126,13 +127,13 @@ def readkeypad():
 				balance = balance[0]
 				print balance
 				newbalance = int(balance)
-				cur.execute("SELECT * FROM users WHERE cardid = %s",(data))
+				cur.execute("SELECT allowedzero FROM users WHERE cardid = %s",(data))
 				row = cur.fetchone()
 				print "Checking if allowed to go below 0: "
-				allowed = row[4]
+				allowed = balance[0]
 				print allowed
 				allowedzero = int(allowed)
-				if allowedzero:
+				if allowedzero == 1:
 					os.system("python /home/mitch/display.py  --Select-Slot--------------------------------------------------")
 
 					VENDkeypad.flushInput()
@@ -154,187 +155,187 @@ def readkeypad():
 
 
 				if keydata == "2":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py B")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "3":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py C")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "3":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py D")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "5":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py E")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "6":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py F")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "7":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py G")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "8":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py H")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "9":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py I")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "10":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py J")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "11":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py K")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "12":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py L")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "13":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py M")
 					keydata = keydata
 					takemoney()
 					return
 
 				if keydata == "14":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py N")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "15":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py O")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "16":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py P")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "17":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py Q")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "18":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py R")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "19":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py S")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "20":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py T")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "21":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py U")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "22":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py V")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "23":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py W")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "24":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py X")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "25":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py Y")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "26":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py Z")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "27":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py a")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "28":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py b")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "29":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py c")
 					keydata = keydata
 					takemoney()
 					return
 				if keydata == "30":
-					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+					os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 					os.system("python /home/mitch/dispenser.py d")
 					keydata = keydata
 					takemoney()
@@ -359,15 +360,13 @@ def readkeypad():
 
 def enroll():
 	# DO NOT LOOK, BAD CODE... But it works... MK
-	os.system("python /home/mitch/display.py Registering-Card-----Please-Wait-------------------------------")
-	os.system(displaydata)
+	os.system("python /home/mitch/display.py Card-Not-Found--Card-Enrolled----------------------------------")
 	print "Enrolling card ID: "
 	print(data)
 	cur = con.cursor()
-	cur.execute('INSERT into users (cardid, balance, cardtype, allowedzero) values (%s, %s, %s)',(data, '0000', 'EM4', '1'))
+	cur.execute('INSERT into users (cardid, balance, cardtype) values (%s, %s, %s)',(data, '0000', 'NFC'))
 	con.commit()
 	print "Card Enrolled, GO back to main thing"
-	time.sleep(4)
 
 	return
 
@@ -385,18 +384,18 @@ def irk(message):
 # ok so this is the main, I should probably put this in its own def.
 while True:
 	try:
-		print "Opening EM4",EM4
-		irk("EM4_vendserver.py Running")
-		syslog.syslog("VENDO: Checking for EM4 Reader")
- 		if os.path.isfile(EM4) and os.access(EM4, os.R_OK):
-			syslog.syslog("EM4 MISSING")
+		print "Opening NFC",NFC
+		irk("NFC_vendserver.py Running")
+		syslog.syslog("VENDO: Checking for NFC Reader")
+ 		if os.path.isfile(NFC) and os.access(NFC, os.R_OK):
+			syslog.syslog("NFC MISSING")
 		else:
-			syslog.syslog(" EM4 FOUND")
+			syslog.syslog(" NFC FOUND")
  			syslog.syslog("VENDO: Ready!")
 			print("Sending Display Data")
 			# This one works below... Spaces dont work... so i used dashes... Why dont they work?
 			#os.system('python /home/mitch/display.py  "   Test" "1234"')
-#			os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------")
+#			os.system("python /home/mitch/display.py  --Dispensing---------------------------------------------------- -")
 
 			#os.system("python /home/mitch/display.py  ----Welcome-----Please-Scan-CardArtifactory-Vend-----Code-V1---- -")
 							      #----Welcome-----Please-Scan-CardArtifactory-Vend-----Code-V9---
@@ -408,7 +407,7 @@ while True:
 #		VENDkeypad = serial.Serial(KEYPAD, 9600)
 		global keydata
 #		keydata = VENDkeypad.readline().strip()
-		data = EM4reader.read(11).strip()
+		data = NFCreader.readline().strip()
 		if data:
 			code = ''
 			cur = con.cursor()
@@ -421,18 +420,18 @@ while True:
 			if row :
 				print row
 				# commented out for now to not spam
-				#irk('EM4 Card Presented: ' +row[0])
-				#irk('EM4 Card Owner: ' +row[3])
-				#irk('EM4 Card Balance (Cents): ' +row[1])
+				#irk('NFC Card Presented: ' +row[0])
+				#irk('NFC Card Owner: ' +row[3])
+				#irk('NFC Card Balance (Cents): ' +row[1])
 				print 'Card Exists, Go to a new routine to start vending This part is done'
 				beginvend()
 
-				EM4reader.flushInput()
-				EM4reader.flushOutput()
+				NFCreader.flushInput()
+				NFCreader.flushOutput()
   			else:
 	 			print 'Card does not exist, Go to the enroll routine.'
-				EM4reader.flushInput()
-				EM4reader.flushOutput()
+				NFCreader.flushInput()
+				NFCreader.flushOutput()
 				enroll()
 
 
